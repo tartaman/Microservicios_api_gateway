@@ -1,0 +1,35 @@
+services:
+  eureka-server:
+    build:
+      context: ../eurekaserver/eurekaserver
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+  gateway:
+    build:
+      context: ../apigateway/escuela_modelo
+      dockerfile: Dockerfile
+    container_name: gateway
+    ports:
+      - "8082:8080"
+    depends_on:
+      - couponservice
+      - productservice
+  couponservice:
+    build:
+      context: ../couponservice/couponservice
+      dockerfile: Dockerfile
+    container_name: couponservice
+    ports:
+      - "8081:8080"
+
+  productservice:
+    build:
+      context: ../productservice/productservice
+      dockerfile: Dockerfile
+    container_name: productservice
+    ports:
+      - "8080:8080"
+    depends_on:
+      - couponservice
